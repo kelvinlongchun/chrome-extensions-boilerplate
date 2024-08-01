@@ -11,6 +11,8 @@ function build(ignoredFiles: string[], ignoredFolders: string[]) {
 }
 
 export default defineConfig((options) => {
+	const isWatch = !!options.env && "WATCH" in options.env;
+
 	return {
 		entry: {
 			background: "./src/background/index.ts",
@@ -18,11 +20,11 @@ export default defineConfig((options) => {
 			popup: "./src/popup/index.ts",
 		},
 		outDir: "./js",
-		sourcemap: !!options.watch,
-		minify: !options.watch,
+		sourcemap: isWatch,
+		minify: !isWatch,
 		clean: true,
 		onSuccess: async () => {
-			if (!options.watch) {
+			if (!isWatch) {
 				const ignoredFiles = [
 					"package.json",
 					"package-lock.json",
