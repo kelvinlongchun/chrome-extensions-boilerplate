@@ -3,8 +3,8 @@
 	"version": "1.0.0",
 	"main": "index.js",
 	"scripts": {
-		"build": "tsup",
-		"dev": "tsup --watch"
+		"build": "tsc --noEmit && tsup",
+		"dev": "tsc-watch --noEmit --onSuccess \"tsup --env.WATCH\""
 	},
 	"author": "Kelvin Wong",
 	"license": "ISC",
@@ -12,6 +12,7 @@
 	"devDependencies": {
 		"@types/chrome": "^0.0.268",
 		"@types/node": "^20.14.12",
+		"tsc-watch": "^6.2.0",
 		"tsup": "^8.2.3",
 		"typescript": "^5.5.3"
 	}
