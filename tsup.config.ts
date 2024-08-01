@@ -1,13 +1,32 @@
 import { defineConfig } from "tsup";
 import { exec } from "child_process";
 
+function runCommand(command: string) {
+	console.log("\x1b[32mRunning command: \x1b[0m" + command);
+
+	exec(command, (error, stdout, stderr) => {
+		if (error && error.code !== 1) {
+			console.error(
+				"\x1b[31mCould not build the extension: \x1b[0m" +
+					error +
+					` Error Code: ${error.code}`
+			);
+		}
+		if (stdout !== "") {
+			console.log("\x1b[32mstdout: \x1b[0m" + stdout);
+		}
+		if (stderr !== "") {
+			console.error("\x1b[31mstderr: \x1b[0m" + stderr);
+		}
+	});
+}
+
 function build(ignoredFiles: string[], ignoredFolders: string[]) {
-	exec("if exist dist rmdir /s /q dist");
-	exec("mkdir dist");
 	const robocopyCommand = `robocopy . dist /E /XF ${ignoredFiles.join(
 		" "
 	)} /XD ${ignoredFolders.join(" ")} dist`;
-	exec(robocopyCommand);
+
+	runCommand(robocopyCommand);
 }
 
 export default defineConfig((options) => {
