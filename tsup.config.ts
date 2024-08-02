@@ -22,11 +22,12 @@ function runCommand(command: string) {
 }
 
 function build(ignoredFiles: string[], ignoredFolders: string[]) {
+	const rmdirCommand = "(if exist dist rmdir /s /q dist)";
 	const robocopyCommand = `robocopy . dist /E /XF ${ignoredFiles.join(
 		" "
 	)} /XD ${ignoredFolders.join(" ")} dist`;
 
-	runCommand(robocopyCommand);
+	runCommand(`${rmdirCommand} && ${robocopyCommand}`);
 }
 
 export default defineConfig((options) => {
